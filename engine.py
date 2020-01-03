@@ -1,13 +1,14 @@
 import termbox
+from handler import handle
 
-screen_width = 80
-screen_height = 21
+t = termbox.Termbox()
+
+screen_width = t.width()
+screen_height = t.height()
 player_x = screen_width//2
 player_y = screen_height//2
 
-t = termbox.Termbox()
 t.clear()
-
 t.change_cell(player_x,player_y, ord("@"), termbox.BLACK, termbox.WHITE)
 t.present()
 
@@ -15,8 +16,17 @@ run_app = True
 while run_app:
     events = t.poll_event()
     while events:
-        (type, ch, key, mod, w, h, x, y) = events
-        if type == termbox.EVENT_KEY and key == termbox.KEY_ESC:
+        change = handle(events)
+        move = change.get('move')
+        exit = change.get('exit')
+        if move:
+            dx, dy = move
+            player_x += dx
+            player_y += dy
+        if exit:
             run_app = False
+        t.clear()
+        t.change_cell(player_x,player_y, ord("@"), termbox.BLACK, termbox.WHITE)
+        t.present()
         events = t.peek_event()
-    t.close()
+t.close()
