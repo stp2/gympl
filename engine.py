@@ -15,18 +15,16 @@ t.present()
 run_app = True
 while run_app:
     events = t.poll_event()
-    while events:
-        change = handle(events)
-        move = change.get('move')
-        exit = change.get('exit')
-        if move:
-            dx, dy = move
-            player_x += dx
-            player_y += dy
-        if exit:
-            run_app = False
-        t.clear()
-        t.change_cell(player_x,player_y, ord("@"), termbox.BLACK, termbox.WHITE)
-        t.present()
-        events = t.peek_event()
+    change = handle(events)
+    move = change.get('move')
+    exit = change.get('exit')
+    if move:
+        dx, dy = move
+        player_x += dx
+        player_y += dy
+    if exit:
+        run_app = False
+    t.clear()
+    t.change_cell(player_x,player_y, ord("@"), termbox.BLACK, termbox.WHITE)
+    t.present()
 t.close()
