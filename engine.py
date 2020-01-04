@@ -1,5 +1,5 @@
+from head import *
 import sys
-import termbox
 from handler import handle
 from entity import MovableEntity
 
@@ -24,10 +24,6 @@ def border(x, y, dx, dy):
         return (dx, dy)
 
 
-t = termbox.Termbox()
-# Nethack like size of map
-screen_width = 80
-screen_height = 21
 if screen_width > t.width() or screen_height > t.height():
     t.close()
     print("Too small screen\nMust be 80x21")
@@ -37,7 +33,7 @@ run_app = True
 player = MovableEntity(screen_width/2, screen_height/2, '@', termbox.BLACK)
 while run_app:
     t.clear()
-    t.change_cell(player.x, player.y, ord(player.char), player.color,  termbox.WHITE)
+    t.change_cell(player.x, player.y, ord(player.char), player.color,  default_background)
     t.present()
     events = t.poll_event()
     change = handle(events)
