@@ -7,5 +7,7 @@ default_background_char = ' '
 t = termbox.Termbox()
 t.clear()
 # Nethack like size of map
-screen_width = 80
-screen_height = 21
+map_width = 80
+map_height = 21
+screen_widht = 80
+screen_height = 24

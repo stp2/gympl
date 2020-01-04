@@ -15,6 +15,6 @@ def clear_entity(t, entity):
     t.change_cell(entity.x, entity.y, ord(default_background_char), entity.color,  default_background_color)
 
 def clear_map(t):
-    for y in range(screen_height-1): # indexuje se od 0
-        for x in range(screen_width-1):
+    for y in range(map_height):
+        for x in range(map_width):
             t.change_cell(x, y, ord(default_background_char), default_background_color, default_background_color)

@@ -13,11 +13,11 @@ def border(x, y, dx, dy):
     test = False # nedošlo k překročení hranic
     if x+dx < 0:
         test = True
-    elif x+dx > (screen_width - 1): # indexuje se od 0
+    elif x+dx >= (map_width): # indexuje se od 0
         test = True
     if y+dy < 0:
         test = True
-    elif y+dy > (screen_height - 1): # indexuje se od 0
+    elif y+dy >= (map_height): # indexuje se od 0
         test = True
     if test:
         return (0, 0)
@@ -25,14 +25,14 @@ def border(x, y, dx, dy):
         return (dx, dy)
 
 
-if screen_width > t.width() or screen_height > t.height():
+if screen_widht > t.width() or screen_height > t.height():
     t.close()
-    print("Too small screen\nMust be 80x21")
+    print("Too small map\nMust be 80x21")
     sys.exit(0)
 
 run_app = True
 clear_map(t)
-player = MovableEntity(screen_width/2, screen_height/2, '@', termbox.BLACK)
+player = MovableEntity(map_width/2, map_height/2, '@', termbox.BLACK)
 entities = [player]
 while run_app:
     render_all(t, entities)
