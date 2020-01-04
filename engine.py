@@ -1,10 +1,16 @@
+import sys
 import termbox
 from handler import handle
 
 t = termbox.Termbox()
 
-screen_width = t.width()
-screen_height = t.height()
+# Nethack like size of map
+screen_width = 80
+screen_height = 21
+if screen_width > t.width() or screen_height > t.height():
+    t.close()
+    print("Too small screen\nMust be 80x21")
+    sys.exit(0)
 player_x = screen_width//2
 player_y = screen_height//2
 
