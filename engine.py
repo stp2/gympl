@@ -2,6 +2,7 @@ from head import *
 import sys
 from handler import handle
 from entity import MovableEntity
+from render import render_all, clear_all, clear_map
 
 def border(x, y, dx, dy):
     """
@@ -30,15 +31,17 @@ if screen_width > t.width() or screen_height > t.height():
     sys.exit(0)
 
 run_app = True
+clear_map(t)
 player = MovableEntity(screen_width/2, screen_height/2, '@', termbox.BLACK)
+entities = [player]
 while run_app:
-    t.clear()
-    t.change_cell(player.x, player.y, ord(player.char), player.color,  default_background)
+    render_all(t, entities)
     t.present()
     events = t.poll_event()
     change = handle(events)
     move = change.get('move')
     exit = change.get('exit')
+    clear_all(t, entities)
     if move:
         dx, dy = move
         player.move(border(player.x, player.y, dx, dy))
