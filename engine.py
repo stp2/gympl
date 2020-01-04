@@ -12,6 +12,27 @@ t.clear()
 t.change_cell(player_x,player_y, ord("@"), termbox.BLACK, termbox.WHITE)
 t.present()
 
+def border(x, y, dx, dy):
+    """
+    (původní x a y; změna)
+    Hlídá hranice obrazovky.
+    Pokud dojde k překročení vrátí původní souřadnice, jinak nové.
+    """
+    test = False
+    if x+dx < 0:
+        test = True
+    elif x+dx > (screen_width - 1): # indexuje se od 0
+        test = True
+    if y+dy < 0:
+        test = True
+    elif y+dy > (screen_height - 1): # indexuje se od 0
+        test = True
+    if test:
+        return (x, y)
+    else:
+        return (x+dx, y+dy)
+
+
 run_app = True
 while run_app:
     events = t.poll_event()
@@ -20,8 +41,7 @@ while run_app:
     exit = change.get('exit')
     if move:
         dx, dy = move
-        player_x += dx
-        player_y += dy
+        player_x, player_y = border(player_x, player_y, dx, dy)
     if exit:
         run_app = False
     t.clear()
