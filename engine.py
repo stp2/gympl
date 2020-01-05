@@ -31,17 +31,17 @@ if screen_widht > t.width() or screen_height > t.height():
     sys.exit(0)
 
 run_app = True
-clear_map(t)
+clear_map()
 player = MovableEntity(map_width/2, map_height/2, '@', termbox.BLACK)
 entities = [player]
 while run_app:
-    render_all(t, entities)
+    render_all(entities)
     t.present()
     events = t.poll_event()
     change = handle(events)
     move = change.get('move')
     exit = change.get('exit')
-    clear_all(t, entities)
+    clear_all(entities)
     if move:
         dx, dy = move
         player.move(border(player.x, player.y, dx, dy))
