@@ -5,27 +5,6 @@ from entity import MovableEntity
 from render import render_all, clear_all, clear_map
 from map import GameMap
 
-def border(x, y, dx, dy):
-    """
-    (původní x a y; změna)
-    Hlídá hranice obrazovky.
-    Pokud dojde k překročení vrátí (0, 0), jinak posun.
-    """
-    test = False # nedošlo k překročení hranic
-    if x+dx < 0:
-        test = True
-    elif x+dx >= (map_width): # indexuje se od 0
-        test = True
-    if y+dy < 0:
-        test = True
-    elif y+dy >= (map_height): # indexuje se od 0
-        test = True
-    if test:
-        return (0, 0)
-    else:
-        return (dx, dy)
-
-
 if screen_widht > t.width() or screen_height > t.height():
     t.close()
     print("Too small map\nMust be 80x21")
