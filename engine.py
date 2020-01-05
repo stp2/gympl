@@ -3,6 +3,7 @@ import sys
 from handler import handle
 from entity import MovableEntity
 from render import render_all, clear_all, clear_map
+from map import GameMap
 
 def border(x, y, dx, dy):
     """
@@ -34,8 +35,9 @@ run_app = True
 clear_map()
 player = MovableEntity(map_width/2, map_height/2, '@', termbox.BLACK)
 entities = [player]
+game_map = GameMap()
 while run_app:
-    render_all(entities)
+    render_all(entities, game_map)
     t.present()
     events = t.poll_event()
     change = handle(events)
@@ -44,7 +46,8 @@ while run_app:
     clear_all(entities)
     if move:
         dx, dy = move
-        player.move(border(player.x, player.y, dx, dy))
+        if not game_map.isBlocked(player.x + dx, player.y + dy):
+            player.move(move)
     if exit:
         run_app = False
 t.close()
