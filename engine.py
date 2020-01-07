@@ -3,7 +3,7 @@ import sys
 from handler import handle
 from entity import MovableEntity
 from render import render_all, clear_all, clear_map
-from map import GameMap
+from map import GameMap, Rect
 
 if screen_widht > t.width() or screen_height > t.height():
     t.close()
@@ -12,9 +12,10 @@ if screen_widht > t.width() or screen_height > t.height():
 
 run_app = True
 clear_map()
-player = MovableEntity(map_width/2, map_height/2, '@', termbox.BLACK)
+player = MovableEntity(4, 5, '@', termbox.BLACK)
 entities = [player]
 game_map = GameMap()
+game_map.makeMap()
 while run_app:
     render_all(entities, game_map)
     t.present()
