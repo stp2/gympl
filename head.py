@@ -11,3 +11,6 @@ map_width = 80
 map_height = 21
 screen_widht = 80
 screen_height = 24
+roomMaxSize = 12
+roomMinSize = 2
+maxRooms = 6
