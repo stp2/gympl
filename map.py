@@ -71,6 +71,11 @@ class GameMap:
                     # all rooms after the first:
                     # connect it to the previous room with a tunnel
                     (prev_x, prev_y) = (randint(rooms[numRooms-1].x1, rooms[numRooms-1].x2), randint(rooms[numRooms-1].y1, rooms[numRooms-1].y2))
+                    prev_x = rooms[numRooms-1].borderX(new_x)
+                    prev_y = rooms[numRooms-1].borderY(new_y)
+
+                    new_x = new_room.borderX(prev_x)
+                    new_y = new_room.borderY(prev_y)
                     # flip a coin (random number that is either 0 or 1)
                     if randint(0, 1) == 1:
                         # first move horizontally, then vertically
@@ -104,3 +109,15 @@ class Rect():
         # returns true if this rectangle intersects with another one
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
+
+    def borderX(self, direction):
+        if self.x1 < direction:
+            return self.x2
+        else:
+            return self.x1
+
+    def borderY(self, direction):
+        if self.y1 < direction:
+            return self.y2
+        else:
+            return self.y1
