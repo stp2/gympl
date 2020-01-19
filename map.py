@@ -53,9 +53,11 @@ class GameMap:
             y = randint(0, map_height - h)
              # "Rect" class makes rectangles easier to work with
             new_room = Rect(x, y, w, h)
+            # space between rooms
+            bigger = Rect(x-1, y-1, w+1, h+1)
             # run through the other rooms and see if they intersect with this one
             for other_room in rooms:
-                if new_room.intersect(other_room):
+                if bigger.intersect(other_room):
                     break
             else:
                 # this means there are no intersections, so this room is valid
