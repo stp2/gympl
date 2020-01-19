@@ -14,3 +14,4 @@ screen_height = 24
 roomMaxSize = 12
 roomMinSize = 2
 maxRooms = 6
+maxCoridorrs = 3

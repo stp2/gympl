@@ -61,32 +61,78 @@ class GameMap:
                 # this means there are no intersections, so this room is valid
                 # "paint" it to the map's tiles
                 self.createRoom(new_room)
-                (new_x, new_y) = (randint(new_room.x1, new_room.x2), randint(new_room.y1, new_room.y2))
-                # center coordinates of new room, will be useful later
                 if numRooms == 0:
                     # this is the first room, where the player starts at
                     player.x = randint(x, x+w-1)
                     player.y = randint(y, y+h-1)
-                else:
-                    # all rooms after the first:
-                    # connect it to the previous room with a tunnel
-                    (prev_x, prev_y) = (randint(rooms[numRooms-1].x1, rooms[numRooms-1].x2), randint(rooms[numRooms-1].y1, rooms[numRooms-1].y2))
-                    prev_x, prev_y = rooms[numRooms-1].border(new_x, new_y)
-
-                    new_x, new_y = new_room.border(prev_x, prev_y)
-                    # flip a coin (random number that is either 0 or 1)
-                    if randint(0, 1) == 1:
-                        # first move horizontally, then vertically
-                        self.createHTunnel(prev_x, new_x, prev_y)
-                        self.createVTunnel(prev_y, new_y, new_x)
-                    else:
-                        # first move vertically, then horizontally
-                        self.createVTunnel(prev_y, new_y, prev_x)
-                        self.createHTunnel(prev_x, new_x, new_y)
-
                 # finally, append the new room to the list
                 rooms.append(new_room)
                 numRooms += 1
+
+        graph = [[False for i in rooms] for i in rooms]
+        for i in range(len(rooms)):
+            graph[i][i] = True
+        i = -1
+        for r in rooms:
+            numCorridors = 0
+            i += 1
+            j = -1
+            for cr in rooms:
+                j += 1
+                # same room
+                if r == cr:
+                    continue
+                # too much corridors
+                if numCorridors > randint(1, maxCoridorrs):
+                    break
+                # corridor exist
+                if graph[i][j] == True:
+                    continue
+
+                # random coordinates of start tunnel
+                (new_x, new_y) = (randint(r.x1, r.x2), randint(r.y1, r.y2))
+                # try connect to another room, also random coordinates
+                (prev_x, prev_y) = (randint(cr.x1, cr.x2), randint(cr.y1, cr.y2))
+                prev_x, prev_y = cr.border(new_x, new_y)
+                new_x, new_y = r.border(prev_x, prev_y)
+
+                # first move horizontally, then vertically
+                cor = Rect(min(prev_x, new_x), new_y, abs(new_x-prev_x), 1)
+                inter = False
+                for through in rooms:
+                    if cor.intersect(through):
+                        inter = True
+                        break
+                cor = Rect(prev_x, min(prev_y, new_y), 1, abs(new_y-prev_y))
+                for through in rooms:
+                    if cor.intersect(through):
+                        inter = True
+                        break
+                if not inter:
+                    self.createHTunnel(prev_x, new_x, new_y)
+                    self.createVTunnel(prev_y, new_y, prev_x)
+                    graph[i][j] = True
+                    graph[j][i] = True
+                    numCorridors += 1
+                # first move vertically, then horizontally
+                else:
+                    cor = Rect(min(prev_x, new_x), new_y, abs(new_x-prev_x), 1)
+                    inter = False
+                    for through in rooms:
+                        if cor.intersect(through):
+                            inter = True
+                            break
+                    cor = Rect(prev_x, min(prev_y, new_y), 1, abs(new_y-prev_y))
+                    for through in rooms:
+                        if cor.intersect(through):
+                            inter = True
+                            break
+                    if not inter:
+                        graph[i][j] = True
+                        graph[j][i] = True
+                        self.createVTunnel(prev_y, new_y, new_x)
+                        self.createHTunnel(prev_x, new_x, prev_y)
+                        numCorridors += 1
 
     def createHTunnel(self, x_from, x_to, y):
         for x in range(min(x_from, x_to), max(x_from, x_to)+1):
