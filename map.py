@@ -54,7 +54,7 @@ class GameMap:
              # "Rect" class makes rectangles easier to work with
             new_room = Rect(x, y, w, h)
             # space between rooms
-            bigger = Rect(x-1, y-1, w+1, h+1)
+            bigger = Rect(x-1, y-1, w+2, h+2)
             # run through the other rooms and see if they intersect with this one
             for other_room in rooms:
                 if bigger.intersect(other_room):
