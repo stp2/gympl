@@ -97,6 +97,9 @@ class GameMap:
                 (prev_x, prev_y) = (randint(cr.x1, cr.x2), randint(cr.y1, cr.y2))
                 prev_x, prev_y = cr.border(new_x, new_y)
                 new_x, new_y = r.border(prev_x, prev_y)
+                # if out of map
+                if -1 in (prev_x, prev_y, new_x, new_y):
+                    continue
 
                 # first move horizontally, then vertically
                 cor = Rect(min(prev_x, new_x), new_y, abs(new_x-prev_x), 1)
@@ -174,23 +177,21 @@ class Rect():
         # posun mimo místnost
         # rohové pozice
         if (new_x == self.x1 or new_x == self.x2) and (new_y == self.y1 or new_y == self.y2):
-            if randint(0, 1) % 2 == 0:
-                if x > self.x2:
-                    new_x += 1
-                else:
-                    new_x -= 1
+            if x > self.x2:
+                new_x += 1
+            elif x < self.x1:
+                new_x -= 1
+            elif y > self.y2:
+                new_y += 1
             else:
-                if y > self.y2:
-                    new_y += 1
-                else:
-                    new_y -= 1
+                new_y -= 1
         # hranové pozice
         else:
             if x > self.x2:
                 new_x += 1
-            else:
+            elif x < self.x1:
                 new_x -= 1
-            if y > self.y2:
+            elif y > self.y2:
                 new_y += 1
             else:
                 new_y -= 1
