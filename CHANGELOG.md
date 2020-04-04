@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Draw doors
+ - Draw walls around room
  - @ can walk around
  - random rooms connected with coridors
  - check if tile is movable
