@@ -15,3 +15,12 @@ class Tile:
             block_sight = blocked
 
         self.block_sight = block_sight
+
+tiles_dict = {
+        'floor' : Tile('.', termbox.BLACK, False),
+        'rock' : Tile(' ', termbox.WHITE, True),
+        'corridor' : Tile('#', termbox.BLACK, False),
+        'door' : Tile('+', termbox.YELLOW, False),
+        'wallH' : Tile('-', termbox.BLACK, True),
+        'wallV' : Tile('|', termbox.BLACK, True)
+}

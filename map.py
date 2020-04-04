@@ -1,19 +1,13 @@
 from head import *
-from tile import Tile
+from tile import Tile,tiles_dict
 from random import randint
 
 class GameMap:
     def __init__(self):
-        self.floor = Tile('.', termbox.BLACK, False)
-        self.rock = Tile(' ', termbox.WHITE, True)
-        self.corridor = Tile('#', termbox.BLACK, False)
-        self.door = Tile('+', termbox.YELLOW, False)
-        self.wallH = Tile('-', termbox.BLACK, True)
-        self.wallV = Tile('|', termbox.BLACK, True)
         self.tiles = self.initialize_tiles()
 
     def initialize_tiles(self):
-        tiles = [[self.rock for x in range(map_width)] for y in range(map_height)]
+        tiles = [[tiles_dict['rock'] for x in range(map_width)] for y in range(map_height)]
 
         return tiles
 
@@ -41,7 +35,7 @@ class GameMap:
     def createRoom(self, room):
         for y in range(room.y1, room.y2+1):
             for x in range(room.x1, room.x2+1):
-                self.tiles[y][x] = self.floor
+                self.tiles[y][x] = tiles_dict['floor']
 
     def makeMap(self, player):
         rooms = []
@@ -149,32 +143,32 @@ class GameMap:
 
     def createHTunnel(self, x_from, x_to, y):
         for x in range(min(x_from, x_to), max(x_from, x_to)+1):
-            self.tiles[y][x] = self.corridor
+            self.tiles[y][x] = tiles_dict['corridor']
 
     def createVTunnel(self, y_from, y_to, x):
         for y in range(min(y_from, y_to), max(y_from, y_to)+1):
-            self.tiles[y][x] = self.corridor
+            self.tiles[y][x] = tiles_dict['corridor']
 
     def makeWalls(self, room):
         # make horizontal walls
         for i in range(room.x1, room.x2+1):
-            self.tiles[room.y1][i] = self.wallH
-            self.tiles[room.y2][i] = self.wallH
+            self.tiles[room.y1][i] = tiles_dict['wallH']
+            self.tiles[room.y2][i] = tiles_dict['wallH']
         # make vertical walls
         for i in range(room.y1+1, room.y2):
-            self.tiles[i][room.x1] = self.wallV
-            self.tiles[i][room.x2] = self.wallV
+            self.tiles[i][room.x1] = tiles_dict['wallV']
+            self.tiles[i][room.x2] = tiles_dict['wallV']
 
     def makeDoor(self, x, y):
-        walls = (self.wallV.char, self.wallH.char)
+        walls = (tiles_dict['wallV'].char, tiles_dict['wallH'].char)
         if self.tiles[y][x-1].char in walls:
-            self.tiles[y][x-1] = self.door
+            self.tiles[y][x-1] = tiles_dict['door']
         if self.tiles[y][x+1].char in walls:
-            self.tiles[y][x+1] = self.door
+            self.tiles[y][x+1] = tiles_dict['door']
         if self.tiles[y-1][x].char in walls:
-            self.tiles[y-1][x] = self.door
+            self.tiles[y-1][x] = tiles_dict['door']
         if self.tiles[y+1][x].char in walls:
-            self.tiles[y+1][x] = self.door
+            self.tiles[y+1][x] = tiles_dict['door']
 
 class Rect():
     def __init__(self, x, y, w, h):
