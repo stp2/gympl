@@ -69,6 +69,7 @@ class GameMap:
                 # finally, append the new room to the list
                 rooms.append(new_room)
                 numRooms += 1
+        self.rooms = rooms
 
         # graf of exist corridors
         graph = [[False for i in rooms] for i in rooms]
@@ -160,15 +161,10 @@ class GameMap:
             self.tiles[i][room.x2] = tiles_dict['wallV']
 
     def makeDoor(self, x, y):
-        walls = (tiles_dict['wallV'].char, tiles_dict['wallH'].char)
-        if self.tiles[y][x-1].char in walls:
-            self.tiles[y][x-1] = tiles_dict['door']
-        if self.tiles[y][x+1].char in walls:
-            self.tiles[y][x+1] = tiles_dict['door']
-        if self.tiles[y-1][x].char in walls:
-            self.tiles[y-1][x] = tiles_dict['door']
-        if self.tiles[y+1][x].char in walls:
-            self.tiles[y+1][x] = tiles_dict['door']
+        walls = (tiles_dict['wallV'], tiles_dict['wallH'])
+        for coordinates in near(x, y):
+            if self.tiles[coordinates[1]][coordinates[0]] in walls:
+                self.tiles[coordinates[1]][coordinates[0]] = tiles_dict['door']
 
 class Rect():
     def __init__(self, x, y, w, h):
@@ -181,6 +177,9 @@ class Rect():
         # returns true if this rectangle intersects with another one
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
+
+    def isIn(self, x, y):
+        return x > self.x1 and x < self.x2 and y > self.y1 and y < self.y2
 
     def border(self, x, y):
         '''
