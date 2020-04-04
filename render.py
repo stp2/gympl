@@ -6,8 +6,10 @@ def render_all(entities, game_map, fov):
     """
     for y in range(map_height):
         for x in range(map_width):
-            if fov.map[y][x] or game_map.tiles[y][x].explored:
+            if fov.map[y][x]:
                 t.change_cell(x, y, ord(game_map.tiles[y][x].char), game_map.tiles[y][x].color, default_background_color)
+            elif game_map.tiles[y][x].explored:
+                t.change_cell(x, y, ord(game_map.tiles[y][x].char), game_map.tiles[y][x].color | termbox.BOLD, default_background_color)
     for ent in entities:
         draw_entity(ent)
 
