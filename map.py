@@ -7,7 +7,7 @@ class GameMap:
         self.tiles = self.initialize_tiles()
 
     def initialize_tiles(self):
-        tiles = [[tiles_dict['rock'] for x in range(map_width)] for y in range(map_height)]
+        tiles = [[Tile(tiles_dict['rock'][0], tiles_dict['rock'][1], tiles_dict['rock'][2], tiles_dict['rock'][3]) for x in range(map_width)] for y in range(map_height)]
 
         return tiles
 
@@ -35,7 +35,7 @@ class GameMap:
     def createRoom(self, room):
         for y in range(room.y1, room.y2+1):
             for x in range(room.x1, room.x2+1):
-                self.tiles[y][x] = tiles_dict['floor']
+                self.tiles[y][x] = Tile(tiles_dict['floor'][0], tiles_dict['floor'][1], tiles_dict['floor'][2], tiles_dict['floor'][3])
 
     def makeMap(self, player):
         rooms = []
@@ -144,27 +144,27 @@ class GameMap:
 
     def createHTunnel(self, x_from, x_to, y):
         for x in range(min(x_from, x_to), max(x_from, x_to)+1):
-            self.tiles[y][x] = tiles_dict['corridor']
+            self.tiles[y][x] = Tile(tiles_dict['corridor'][0], tiles_dict['corridor'][1], tiles_dict['corridor'][2], tiles_dict['corridor'][3])
 
     def createVTunnel(self, y_from, y_to, x):
         for y in range(min(y_from, y_to), max(y_from, y_to)+1):
-            self.tiles[y][x] = tiles_dict['corridor']
+            self.tiles[y][x] = Tile(tiles_dict['corridor'][0], tiles_dict['corridor'][1], tiles_dict['corridor'][2], tiles_dict['corridor'][3])
 
     def makeWalls(self, room):
         # make horizontal walls
         for i in range(room.x1, room.x2+1):
-            self.tiles[room.y1][i] = tiles_dict['wallH']
-            self.tiles[room.y2][i] = tiles_dict['wallH']
+            self.tiles[room.y1][i] = Tile(tiles_dict['wallH'][0], tiles_dict['wallH'][1], tiles_dict['wallH'][2], tiles_dict['wallH'][3])
+            self.tiles[room.y2][i] = Tile(tiles_dict['wallH'][0], tiles_dict['wallH'][1], tiles_dict['wallH'][2], tiles_dict['wallH'][3])
         # make vertical walls
         for i in range(room.y1+1, room.y2):
-            self.tiles[i][room.x1] = tiles_dict['wallV']
-            self.tiles[i][room.x2] = tiles_dict['wallV']
+            self.tiles[i][room.x1] = Tile(tiles_dict['wallV'][0], tiles_dict['wallV'][1], tiles_dict['wallV'][2], tiles_dict['wallV'][3])
+            self.tiles[i][room.x2] = Tile(tiles_dict['wallV'][0], tiles_dict['wallV'][1], tiles_dict['wallV'][2], tiles_dict['wallV'][3])
 
     def makeDoor(self, x, y):
         walls = (tiles_dict['wallV'], tiles_dict['wallH'])
         for coordinates in near(x, y):
-            if self.tiles[coordinates[1]][coordinates[0]] in walls:
-                self.tiles[coordinates[1]][coordinates[0]] = tiles_dict['door']
+            if self.tiles[coordinates[1]][coordinates[0]].compare() in walls:
+                self.tiles[coordinates[1]][coordinates[0]] = Tile(tiles_dict['door'][0], tiles_dict['door'][1], tiles_dict['door'][2], tiles_dict['door'][3])
 
 class Rect():
     def __init__(self, x, y, w, h):
