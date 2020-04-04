@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - FOV: all room or 1 on corridor
  - Draw doors
  - Draw walls around room
  - @ can walk around

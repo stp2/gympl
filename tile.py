@@ -9,6 +9,7 @@ class Tile:
         self.char = char
         self.color = color
         self.blocked = blocked
+        self.explored = False
 
         # By default, if a tile is blocked, it also blocks sight
         if block_sight is None:
@@ -16,11 +17,14 @@ class Tile:
 
         self.block_sight = block_sight
 
+    def compare(self):
+        return (self.char, self.color, self.blocked, self.block_sight)
+
 tiles_dict = {
-        'floor' : Tile('.', termbox.BLACK, False),
-        'rock' : Tile(' ', termbox.WHITE, True),
-        'corridor' : Tile('#', termbox.BLACK, False),
-        'door' : Tile('+', termbox.YELLOW, False),
-        'wallH' : Tile('-', termbox.BLACK, True),
-        'wallV' : Tile('|', termbox.BLACK, True)
+        'floor' : Tile('.', termbox.BLACK, False).compare(),
+        'rock' : Tile(' ', termbox.WHITE, True).compare(),
+        'corridor' : Tile('#', termbox.BLACK, False).compare(),
+        'door' : Tile('+', termbox.YELLOW, False).compare(),
+        'wallH' : Tile('-', termbox.BLACK, True).compare(),
+        'wallV' : Tile('|', termbox.BLACK, True).compare()
 }

@@ -1,12 +1,13 @@
 from head import *
 
-def render_all(entities, game_map):
+def render_all(entities, game_map, fov):
     """
     Draw all objects to map.
     """
     for y in range(map_height):
         for x in range(map_width):
-            t.change_cell(x, y, ord(game_map.tiles[y][x].char), game_map.tiles[y][x].color, default_background_color)
+            if fov.map[y][x] or game_map.tiles[y][x].explored:
+                t.change_cell(x, y, ord(game_map.tiles[y][x].char), game_map.tiles[y][x].color, default_background_color)
     for ent in entities:
         draw_entity(ent)
 
