@@ -7,6 +7,9 @@ class GameMap:
         self.floor = Tile('.', termbox.BLACK, False)
         self.rock = Tile(' ', termbox.WHITE, True)
         self.corridor = Tile('#', termbox.BLACK, False)
+        self.door = Tile('+', termbox.BLACK, False)
+        self.wallH = Tile('-', termbox.BLACK, True)
+        self.wallV = Tile('|', termbox.BLACK, True)
         self.tiles = self.initialize_tiles()
 
     def initialize_tiles(self):
@@ -63,14 +66,17 @@ class GameMap:
                 # this means there are no intersections, so this room is valid
                 # "paint" it to the map's tiles
                 self.createRoom(new_room)
+                self.makeWalls(new_room) # wall is in room
                 if numRooms == 0:
                     # this is the first room, where the player starts at
-                    player.x = randint(x, x+w-1)
-                    player.y = randint(y, y+h-1)
+                    # no start at wall
+                    player.x = randint(x+1, x+w-2)
+                    player.y = randint(y+1, y+h-2)
                 # finally, append the new room to the list
                 rooms.append(new_room)
                 numRooms += 1
 
+        # graf of exist corridors
         graph = [[False for i in rooms] for i in rooms]
         for i in range(len(rooms)):
             graph[i][i] = True
@@ -95,11 +101,9 @@ class GameMap:
                 (new_x, new_y) = (randint(r.x1, r.x2), randint(r.y1, r.y2))
                 # try connect to another room, also random coordinates
                 (prev_x, prev_y) = (randint(cr.x1, cr.x2), randint(cr.y1, cr.y2))
+                # start to borders
                 prev_x, prev_y = cr.border(new_x, new_y)
                 new_x, new_y = r.border(prev_x, prev_y)
-                # if out of map
-                if -1 in (prev_x, prev_y, new_x, new_y):
-                    continue
 
                 # first move horizontally, then vertically
                 cor = Rect(min(prev_x, new_x), new_y, abs(new_x-prev_x), 1)
@@ -146,6 +150,16 @@ class GameMap:
     def createVTunnel(self, y_from, y_to, x):
         for y in range(min(y_from, y_to), max(y_from, y_to)+1):
             self.tiles[y][x] = self.corridor
+
+    def makeWalls(self, room):
+        # make horizontal walls
+        for i in range(room.x1, room.x2+1):
+            self.tiles[room.y1][i] = self.wallH
+            self.tiles[room.y2][i] = self.wallH
+        # make vertical walls
+        for i in range(room.y1+1, room.y2):
+            self.tiles[i][room.x1] = self.wallV
+            self.tiles[i][room.x2] = self.wallV
 
 class Rect():
     def __init__(self, x, y, w, h):
