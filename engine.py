@@ -18,6 +18,7 @@ game_map = GameMap()
 game_map.makeMap(player)
 while run_app:
     render_all(entities, game_map)
+    t.set_cursor(player.x, player.y)
     t.present()
     events = t.poll_event()
     change = handle(events)
