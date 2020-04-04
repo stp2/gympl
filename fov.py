@@ -11,12 +11,12 @@ class Fov():
     def compute(self, map, x, y):
         if map.tiles[y][x].compare() == tiles_dict['corridor']: # Pokud v chodbě, dohled 1
             can = (tiles_dict['corridor'], tiles_dict['door']) # kam může vidět
-            for coordinates in near(x, y): # dlaždice vedle
+            for coordinates in near8(x, y): # dlaždice vedle
                 if map.tiles[coordinates[1]][coordinates[0]].compare() in can:
                     self.map[coordinates[1]][coordinates[0]] = True
                     map.tiles[coordinates[1]][coordinates[0]].explored = True
         elif map.tiles[y][x].compare() == tiles_dict['door']: # ve dveřích vidí vedle a do místnosti
-            for coordinates in near(x, y):
+            for coordinates in near8(x, y):
                 if map.tiles[coordinates[1]][coordinates[0]].compare() == tiles_dict['corridor']:
                     self.map[coordinates[1]][coordinates[0]] = True
                     map.tiles[coordinates[1]][coordinates[0]].explored = True

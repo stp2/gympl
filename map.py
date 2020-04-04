@@ -162,7 +162,7 @@ class GameMap:
 
     def makeDoor(self, x, y):
         walls = (tiles_dict['wallV'], tiles_dict['wallH'])
-        for coordinates in near(x, y):
+        for coordinates in near4(x, y):
             if self.tiles[coordinates[1]][coordinates[0]].compare() in walls:
                 self.tiles[coordinates[1]][coordinates[0]] = Tile(tiles_dict['door'][0], tiles_dict['door'][1], tiles_dict['door'][2], tiles_dict['door'][3])
 
