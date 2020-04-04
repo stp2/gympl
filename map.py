@@ -7,7 +7,7 @@ class GameMap:
         self.floor = Tile('.', termbox.BLACK, False)
         self.rock = Tile(' ', termbox.WHITE, True)
         self.corridor = Tile('#', termbox.BLACK, False)
-        self.door = Tile('+', termbox.BLACK, False)
+        self.door = Tile('+', termbox.YELLOW, False)
         self.wallH = Tile('-', termbox.BLACK, True)
         self.wallV = Tile('|', termbox.BLACK, True)
         self.tiles = self.initialize_tiles()
@@ -118,6 +118,8 @@ class GameMap:
                         inter = True
                         break
                 if not inter:
+                    self.makeDoor(new_x, new_y)
+                    self.makeDoor(prev_x, prev_y)
                     self.createHTunnel(prev_x, new_x, new_y)
                     self.createVTunnel(prev_y, new_y, prev_x)
                     graph[i][j] = True
@@ -139,6 +141,8 @@ class GameMap:
                     if not inter:
                         graph[i][j] = True
                         graph[j][i] = True
+                        self.makeDoor(new_x, new_y)
+                        self.makeDoor(prev_x, prev_y)
                         self.createVTunnel(prev_y, new_y, new_x)
                         self.createHTunnel(prev_x, new_x, prev_y)
                         numCorridors += 1
@@ -160,6 +164,17 @@ class GameMap:
         for i in range(room.y1+1, room.y2):
             self.tiles[i][room.x1] = self.wallV
             self.tiles[i][room.x2] = self.wallV
+
+    def makeDoor(self, x, y):
+        walls = (self.wallV.char, self.wallH.char)
+        if self.tiles[y][x-1].char in walls:
+            self.tiles[y][x-1] = self.door
+        if self.tiles[y][x+1].char in walls:
+            self.tiles[y][x+1] = self.door
+        if self.tiles[y-1][x].char in walls:
+            self.tiles[y-1][x] = self.door
+        if self.tiles[y+1][x].char in walls:
+            self.tiles[y+1][x] = self.door
 
 class Rect():
     def __init__(self, x, y, w, h):
