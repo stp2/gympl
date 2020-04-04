@@ -174,39 +174,30 @@ class Rect():
                 self.y1 <= other.y2 and self.y2 >= other.y1)
 
     def border(self, x, y):
+        '''
+        Call with another end.
+        '''
         # x na kraj
-        if x >= self.x1 and x <= self.x2:
+        if x >= self.x1 and x <= self.x2: # druhé x mezi x1 a x2
             new_x = x
-        elif x > self.x2:
+        elif x > self.x2: # druhé x vpravo
             new_x = self.x2
-        else:
+        else: #druhé x vlevo
             new_x = self.x1
         # y na kraj
-        if y >= self.y1 and y <= self.y2:
+        if y > self.y1 and y < self.y2: # y mezi
             new_y = y
-        elif y > self.y2:
-            new_y = self.y2
-        else:
-            new_y = self.y1
+        elif y > self.y2: # y dole
+            new_y = self.y2-1
+        else: # y nahoře
+            new_y = self.y1+1
         # posun mimo místnost
-        # rohové pozice
-        if (new_x == self.x1 or new_x == self.x2) and (new_y == self.y1 or new_y == self.y2):
-            if x > self.x2:
-                new_x += 1
-            elif x < self.x1:
-                new_x -= 1
-            elif y > self.y2:
-                new_y += 1
-            else:
-                new_y -= 1
-        # hranové pozice
+        if x > self.x2:
+            new_x += 1
+        elif x < self.x1:
+            new_x -= 1
+        elif y > self.y2:
+            new_y += 1
         else:
-            if x > self.x2:
-                new_x += 1
-            elif x < self.x1:
-                new_x -= 1
-            elif y > self.y2:
-                new_y += 1
-            else:
-                new_y -= 1
+            new_y -= 1
         return new_x, new_y
