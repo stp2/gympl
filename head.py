@@ -13,7 +13,7 @@ screen_widht = 80
 screen_height = 24
 roomMaxSize = 14
 roomMinSize = 4
-maxRooms = 6
+maxRooms = 8
 maxCoridorrs = 3
 
 def near4(x, y):

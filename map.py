@@ -45,7 +45,7 @@ class GameMap:
              # "Rect" class makes rectangles easier to work with
             new_room = Rect(x, y, w, h)
             # space between rooms
-            bigger = Rect(x-1, y-1, w+2, h+2)
+            bigger = Rect(x-2, y-2, w+4, h+4) # border 2
             # run through the other rooms and see if they intersect with this one
             for other_room in rooms:
                 if bigger.intersect(other_room):
@@ -176,9 +176,9 @@ class Rect():
         return x > self.x1 and x < self.x2 and y > self.y1 and y < self.y2
 
     def border(self, x, y):
-        '''
+        """
         Call with another end.
-        '''
+        """
         # x na kraj
         if x >= self.x1 and x <= self.x2: # druhé x mezi x1 a x2
             new_x = x
@@ -187,19 +187,35 @@ class Rect():
         else: #druhé x vlevo
             new_x = self.x1
         # y na kraj
-        if y > self.y1 and y < self.y2: # y mezi
+        if y >= self.y1 and y <= self.y2: # y mezi
             new_y = y
         elif y > self.y2: # y dole
-            new_y = self.y2-1
+            new_y = self.y2
         else: # y nahoře
-            new_y = self.y1+1
+            new_y = self.y1
         # posun mimo místnost
-        if x > self.x2:
-            new_x += 1
-        elif x < self.x1:
-            new_x -= 1
-        elif y > self.y2:
-            new_y += 1
+        # v rohu
+        if new_x in (self.x1, self.x2) and new_y in (self.y1, self.y2):
+            if x <= self.x1 and y <= self.y1: # LU
+                new_y -= 1
+                new_x += 1
+            elif x <= self.x1 and y >= self.y2: # LD
+                new_y -=1
+                new_x -= 1
+            elif x >= self.x2 and y <= self.y1: # RU
+                new_y +=1
+                new_x += 1
+            elif x >= self.x2 and y >= self.y2: # RD
+                new_y +=1
+                new_x -= 1
+        # na stěně
         else:
-            new_y -= 1
+            if x > self.x2:
+                new_x += 1
+            elif x < self.x1:
+                new_x -= 1
+            elif y > self.y2:
+                new_y += 1
+            elif y < self.y1:
+                new_y -= 1
         return new_x, new_y
