@@ -12,25 +12,19 @@ class GameMap:
         return tiles
 
     def isBlocked(self, x, y):
-        x = int(x)
-        y = int(y)
-        test = False
         # nejsem mimo mapu
         if x < 0:
-            test = True
+            return True
         elif x >= (map_width): # indexuje se od 0
-            test = True
+            return True
         if y < 0:
-            test = True
+            return True
         elif y >= (map_height): # indexuje se od 0
-            test = True
-        # pokud jsem mimo mapu nemá cenu kontrolovat zeď, navíc bych byl mimo list
-        if test:
             return True
         # je zeď
-        if self.tiles[y][x].blocked == True:
-            test = True
-        return test
+        if self.tiles[y][x].blocked:
+            return True
+        return False
 
     def createRoom(self, room):
         for y in range(room.y1, room.y2+1):
